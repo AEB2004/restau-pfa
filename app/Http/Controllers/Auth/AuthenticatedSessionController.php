@@ -1,38 +1,38 @@
 <?php
-
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class AuthenticatedSessionController extends Controller
 {
-    /**
-     * Handle an incoming authentication request.
-     */
-    public function store(LoginRequest $request): Response
+    public function store(Request $request)
     {
-        $request->authenticate();
+        $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+        ]);
 
-        $request->session()->regenerate();
+        // Chercher l'utilisateur par email
+        $user = User::where('email', $request->email)->first();
 
-        return response()->noContent();
-    }
+        // Vérifier si l'utilisateur existe et le mot de passe est correct
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'message' => 'Les informations de connexion sont invalides.',
+            ], 401); // Unauthorized
+        }
 
-    /**
-     * Destroy an authenticated session.
-     */
-    public function destroy(Request $request): Response
-    {
-        Auth::guard('web')->logout();
+        // Créer un nouveau token
+        $token = $user->createToken('apitoken')->plainTextToken;
 
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
-
-        return response()->noContent();
+        // Retourner la réponse
+        return response()->json([
+            'user' => $user,
+            'token' => $token,
+        ]);
     }
 }
