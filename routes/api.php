@@ -10,18 +10,27 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\InventoryController;
 use App\Http\Controllers\Api\StaffScheduleController;
 use App\Http\Controllers\Api\CustomerFeedbackController;
+use App\Http\Controllers\Api\AdminController;
 
-// Routes publiques
+
 Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->middleware('auth:sanctum');
+Route::middleware( 'auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
 
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin-dashboard', [AdminController::class, 'index']);
+    Route::post('/admin/confirm-reservation', [AdminController::class, 'confirmReservation']);
+    Route::resource('/admin/inventory', InventoryController::class);
+    Route::resource('/admin/shift', StaffScheduleController::class);
+});
 // Routes protégées par auth:sanctum
 Route::middleware(['auth:sanctum'])->group(function () {
     
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
-
     Route::apiResource('reservations', ReservationController::class);
     Route::apiResource('menu-items', MenuItemController::class);
     Route::apiResource('orders', OrderController::class);

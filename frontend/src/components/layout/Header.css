@@ -1,0 +1,140 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: var(--z-fixed);
+  padding: var(--space-3) 0;
+  transition: background-color var(--transition-normal), padding var(--transition-normal), box-shadow var(--transition-normal);
+  background-color: transparent;
+}
+
+.header.scrolled {
+  background-color: white;
+  padding: var(--space-2) 0;
+  box-shadow: var(--shadow-md);
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo1 {
+  z-index: var(--z-fixed);
+}
+
+.logo-text {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  transition: color var(--transition-normal);
+}
+
+.scrolled .logo-text {
+  color: var(--color-primary);
+}
+
+.nav-desktop {
+  display: flex;
+}
+
+.nav-list {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.nav-item a {
+  color: var(--color-neutral-900);
+  font-weight: 500;
+  padding: var(--space-1) 0;
+  position: relative;
+  transition: color var(--transition-normal);
+}
+
+.nav-item a:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--color-secondary);
+  transition: width var(--transition-normal);
+}
+
+.nav-item a:hover, 
+.nav-item a.active {
+  color: var(--color-primary);
+}
+
+.nav-item a:hover:after, 
+.nav-item a.active:after {
+  width: 100%;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.mobile-menu-toggle {
+  display: none;
+  color: var(--color-primary);
+  z-index: var(--z-fixed);
+}
+
+/* Media queries */
+@media (max-width: 992px) {
+  .mobile-menu-toggle {
+    display: block;
+  }
+
+  .nav-desktop {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    max-width: 400px;
+    height: 100vh;
+    background-color: white;
+    padding: var(--space-7) var(--space-4);
+    transition: right var(--transition-normal);
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .nav-mobile-active {
+    right: 0;
+  }
+
+  .nav-list {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
+  .nav-item {
+    width: 100%;
+  }
+
+  .nav-item a {
+    display: block;
+    padding: var(--space-2) 0;
+    width: 100%;
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .header-actions .btn {
+    display: none;
+  }
+  
+  .logo-text {
+    font-size: 1.5rem;
+  }
+}

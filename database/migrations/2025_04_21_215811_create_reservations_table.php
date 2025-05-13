@@ -12,11 +12,14 @@ class CreateReservationsTable extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->unsignedBigInteger('table_id')->nullable();
-            $table->dateTime('reservation_time');
-            $table->string('status')->default('pending');
-            $table->string('phone_number')->nullable();
+            $table->date('date');
+            $table->time('time');
+            $table->integer('nombrepersonnes')->nullable(); // Nombre de personnes
+            $table->string('party')->nullable(); // Pour un type d'événement (ex: "anniversaire")
+            $table->text('special_requests')->nullable();
+            $table->foreignId('table_id')->constrained('tables')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            
             $table->timestamps();
         });
     }

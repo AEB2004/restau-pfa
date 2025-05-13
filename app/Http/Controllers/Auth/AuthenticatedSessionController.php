@@ -15,24 +15,22 @@ class AuthenticatedSessionController extends Controller
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
-
-        // Chercher l'utilisateur par email
+    
         $user = User::where('email', $request->email)->first();
-
-        // Vérifier si l'utilisateur existe et le mot de passe est correct
+    
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json([
-                'message' => 'Les informations de connexion sont invalides.',
-            ], 401); // Unauthorized
+            return response()->json(['message' => 'Les informations de connexion sont invalides.'], 401);
         }
-
-        // Créer un nouveau token
+    
+        // Créer un token
         $token = $user->createToken('apitoken')->plainTextToken;
-
-        // Retourner la réponse
+    
+        // Retourner le rôle avec l'utilisateur
         return response()->json([
             'user' => $user,
+            'role' => $user->role,
             'token' => $token,
         ]);
     }
+    
 }

@@ -1,0 +1,44 @@
+/* Ajoutez ces règles dans votre fichier RegisterForm.css ou le fichier CSS correspondant */
+
+.form-group {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+  
+  .input-icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .input-icon-left {
+    position: absolute;
+    left: 10px;
+    color: #6b7280; /* Couleur grise pour l'icône */
+    z-index: 10;
+  }
+  
+  .input-icon-right {
+    position: absolute;
+    right: 10px;
+    color: #6b7280;
+    cursor: pointer;
+  }
+  
+  .form-input {
+    width: 100%;
+    padding: 0.75rem 2.5rem; /* Ajoutez plus de padding à gauche pour l'icône */
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    font-size: 1rem;
+  }
+  
+  /* Pour les inputs avec icône à gauche seulement */
+  .input-with-icon-left {
+    padding-left: 2.5rem; /* Espace pour l'icône */
+  }
+  
+  /* Pour les inputs avec icône à droite (comme le mot de passe) */
+  .input-with-icon-right {
+    padding-right: 2.5rem; /* Espace pour l'icône d'oeil */
+  }

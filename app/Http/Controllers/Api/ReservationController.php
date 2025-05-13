@@ -22,10 +22,21 @@ class ReservationController extends Controller
 
     public function store(ReservationRequest $request): JsonResponse
     {
-        $item = Reservation::create($request->validated());
-        return response()->json($item, 201);
+        // Vérifie si la table est déjà réservée à cette date/heure
+        $existingReservation = Reservation::where('table_id', $request->table_id)
+            ->where('date', $request->date)
+            ->where('time', $request->time)
+            ->exists();
+    
+        if ($existingReservation) {
+            return response()->json([
+                'message' => 'Cette table est déjà réservée pour cette date et heure.'
+            ], 422);
+        }
+    
+        $reservation = Reservation::create($request->validated());
+        return response()->json($reservation, 201);
     }
-
     public function update(ReservationRequest $request, int $id): JsonResponse
     {
         $item = Reservation::findOrFail($id);
@@ -42,12 +53,6 @@ class ReservationController extends Controller
 
 
 
-// 3. OrderController
-
-
-// 4. UserController
-
-// 5. InventoryController
 
 
 
